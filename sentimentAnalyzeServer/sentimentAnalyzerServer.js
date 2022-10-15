@@ -1,6 +1,8 @@
 const express = require('express');
 const app = new express();
-
+const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
+const { IamAuthenticator } = require('ibm-watson/auth');
+require('dotenv').config();
 
 
 /*This tells the server to use the client 
@@ -21,9 +23,15 @@ variables that you set up in the .env file*/
 // const api_url = process.env.API_URL;
 
 function getNLUInstance() {
-    /*Type the code to create the NLU instance and return it.
-    You can refer to the image in the instructions document
-    to do the same.*/
+    const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
+        version: '2021-08-01',
+        authenticator: new IamAuthenticator ({
+            apikey: process.env.API_KEY
+        }),
+        serviceUrl: process.env.API_URL
+    });
+    
+    return naturalLanguageUnderstanding;
 }
 
 
@@ -144,15 +152,6 @@ let server = app.listen(8080, () => {
 })
 
 
-const NaturalLanguageUnderstandingV1 = require('ibm-watson/natural-language-understanding/v1');
-const { IamAuthenticator } = require('ibm-watson/auth');
 
-const naturalLanguageUnderstanding = new NaturalLanguageUnderstandingV1({
-    version: '2021-08-01',
-    authenticator: new IamAuthenticator ({
-        apikey: '7TULAkhkjLimd7xpQYCSOgASoN-hv_wkL7r9EnacYSq2'
-    }),
-    serviceUrl: 'https://api.au-syd.natural-language-understanding.watson.cloud.ibm.com/instances/e45096c8-703c-42cd-8155-1f970c861219'
-});
 
-return naturalLanguageUnderstanding;
+
